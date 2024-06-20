@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://via.placeholder.com/300" alt="Sample Image">
+    <button onclick="startGame()">Start Game2</button>
+    <div id="log"></div>
+
+    <script>
+        function log1(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += message + '<br>';
+        }
+
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += message + '<br>';
+
+            fetch('https://e1e5-173-33-179-226.ngrok-free.app/log', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => log1('Log response: ' + JSON.stringify(data)))
+            .catch(error => log1('Error logging message: ' + error));
+        }
+
+        function startGame() {
+            const data = { action: 'start_game' };
+            log('Sending data: ' + JSON.stringify(data));
+            try {
+                Telegram.WebApp.sendData(JSON.stringify(data));
+                log('Data sent successfully');
+            } catch (error) {
+                log('Error sending data: ' + error);
+            }
+        }
+
+        log('go to ready');
+        Telegram.WebApp.ready();
+        log('Web App Ready');
+    </script>
+</body>
+</html>
