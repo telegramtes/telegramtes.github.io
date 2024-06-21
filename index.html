@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://web.telegram.org/js/telegram-web.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>Telegram Web App</title>
     <style>
         body {
@@ -36,7 +36,7 @@
 </head>
 <body>
     <img src="https://via.placeholder.com/300" alt="Sample Image">
-    <button onclick="startGame()">Start Game4</button>
+    <button onclick="startGame()">Start Game</button>
     <div id="log"></div>
 
     <script>
@@ -57,8 +57,8 @@
                 body: JSON.stringify({ message: message })
             })
             .then(response => response.json())
-            .then(data => log1('Log response: ' + JSON.stringify(data)))
-            .catch(error => log1('Error logging message: ' + error));
+            .then(data => log('Log response: ' + JSON.stringify(data)))
+            .catch(error => log('Error logging message: ' + error));
         }
 
         function startGame() {
@@ -72,9 +72,11 @@
             }
         }
 
-        log('go to ready');
-        Telegram.WebApp.ready();
-        log('Web App Ready');
+        window.addEventListener('DOMContentLoaded', (event) => {
+            log('go to ready');
+            Telegram.WebApp.ready();
+            log('Web App Ready');
+        });
     </script>
 </body>
 </html>
