@@ -32,33 +32,27 @@
             overflow-y: auto;
             height: 100px;
         }
+        #randomNumber {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
     <img src="https://via.placeholder.com/300" alt="Sample Image">
-    <button onclick="startGame()">Start Game</button>
+    <button onclick="startGame()">Start Game10</button>
     <div id="log"></div>
+    <div id="randomNumber"></div>
 
     <script>
         function log(message) {
             const logDiv = document.getElementById('log');
             logDiv.innerHTML += message + '<br>';
-        }
-
-        function logs(message) {
-            const logDiv = document.getElementById('log');
-            logDiv.innerHTML += message + '<br>';
-
-            fetch('https://e1e5-173-33-179-226.ngrok-free.app/log', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: message })
-            })
-            .then(response => response.json())
-            .then(data => log('Log response: ' + JSON.stringify(data)))
-            .catch(error => log('Error logging message: ' + error));
         }
 
         function startGame() {
@@ -76,6 +70,15 @@
             log('go to ready');
             Telegram.WebApp.ready();
             log('Web App Ready');
+            
+            Telegram.WebApp.onEvent('data', (event) => {
+                log('Data received: ' + event.data);
+                const response = JSON.parse(event.data);
+                if (response.random_number) {
+                    const randomNumberDiv = document.getElementById('randomNumber');
+                    randomNumberDiv.textContent = 'Random Number: ' + response.random_number;
+                }
+            });
         });
     </script>
 </body>
